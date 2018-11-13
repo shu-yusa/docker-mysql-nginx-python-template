@@ -1,0 +1,37 @@
+version: '3.7'
+services:
+  mysql:
+    build: Dockerfiles/mysql/.
+    image: docker-mysql
+    container_name: docker-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: app
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - 13306:3306
+  nginx:
+    build: Dockerfiles/nginx/.
+    image: docker-nginx
+    container_name: docker-nginx
+    ports:
+      - 8888:80
+      - 10443:443
+    links:
+      - app
+    environment:
+      VUE_APP_HTTP_HOST: https://localhost
+    volumes:
+      - sockets:/tmp/sockets
+      # - ../frontend/dist/:/var/www/html:z
+      - ./Dockerfiles/nginx/ssl:/etc/nginx/ssl:z
+  app:
+    build: Dockerfiles/app/.
+    image: docker-app
+    container_name: docker-app
+    volumes:
+      # - ../backend:/app
+      - sockets:/tmp/sockets
+volumes:
+  sockets:

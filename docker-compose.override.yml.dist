@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+  mysql:
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: magnet
+      MYSQL_USER: magnet
+      MYSQL_PASSWORD: magnet
